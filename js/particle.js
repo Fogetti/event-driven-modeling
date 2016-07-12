@@ -1,6 +1,6 @@
 var Particle = (function invocation() {
     
-    function Particle(rx,ry,vx,vy,radius,mass,color,c,screenW,screenH) {
+    function Particle(rx,ry,vx,vy,radius,mass,color,screenW,screenH) {
         this.screenW = screenW;        // screen width
         this.screenH = screenH;        // screen height
         this.rx = rx, this.ry = ry;    // position
@@ -9,7 +9,6 @@ var Particle = (function invocation() {
         this.mass = mass;              // mass
         this.color = color;            // color
         this.cnt = 0;                  // number of collisions so far
-        this.c = c;                    // 2d canvas context
     }
     
     Particle.prototype.move = function(dt) {
@@ -97,8 +96,8 @@ var Particle = (function invocation() {
     Particle.prototype.kineticEnergy = function() {
         return 0.5 * this.mass * (this.vx*this.vx + this.vy*this.vy);
     };
-    
-    Particle.generate = function(c,n,screenW,screenH) {
+        
+    Particle.generate = function(n,screenW,screenH) {
         var particles = [];
         for (var j = 0; j < n; j++) {
             var rx = Math.floor(Math.random()*screenW);                              // position x
@@ -113,15 +112,13 @@ var Particle = (function invocation() {
                     vy = uniform(-1, 1);
                     mag = magnitude(vx,vy);
                 }
-                vx = (vx / mag) * 1500;
-                vy = (vy / mag) * 1500;
+                vx = (vx / mag) * 0.005;
+                vy = (vy / mag) * 0.005;
             })();
             var radius = 5;                                                           // radius
-            var c = c;                                                                // 2d canvas context
             var color = '#' + (Math.random() * 0x00eaff + 0xff0000 | 0).toString(16); // color
             var mass = 0.5;                                                           // mass
-            particles[j] = new Particle(rx,ry,vx,vy,radius,mass,color,c,screenW,screenH);
-            particles[j].draw(c);
+            particles[j] = new Particle(rx,ry,vx,vy,radius,mass,color,screenW,screenH);
         }
         return particles;
     };
